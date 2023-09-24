@@ -45,7 +45,7 @@ class MyBytesAdapter(private var myBytesList: List<MyByte>) :
     inner class BytesViewHolder(val mBinding: ByteItemLayoutBinding) :
         RecyclerView.ViewHolder(mBinding.root), BitChangeListener {
 
-
+        private var isDataSetBySystem = false
         private var adapterIndex = 0
         init {
             mBinding.bit1.addTextChangedListener(EditTextChangeListener(mBinding.bit1, this))
@@ -59,30 +59,34 @@ class MyBytesAdapter(private var myBytesList: List<MyByte>) :
         }
 
         override fun onBitChange() {
-            val bit1Value = mBinding.bit1.text.toString().toInt()
-            val bit2Value = mBinding.bit2.text.toString().toInt()
-            val bit3Value = mBinding.bit3.text.toString().toInt()
-            val bit4Value = mBinding.bit4.text.toString().toInt()
-            val bit5Value = mBinding.bit5.text.toString().toInt()
-            val bit6Value = mBinding.bit6.text.toString().toInt()
-            val bit7Value = mBinding.bit7.text.toString().toInt()
-            val bit8Value = mBinding.bit8.text.toString().toInt()
+            if(!isDataSetBySystem) {
+                val bit1Value = mBinding.bit1.text.toString().toInt()
+                val bit2Value = mBinding.bit2.text.toString().toInt()
+                val bit3Value = mBinding.bit3.text.toString().toInt()
+                val bit4Value = mBinding.bit4.text.toString().toInt()
+                val bit5Value = mBinding.bit5.text.toString().toInt()
+                val bit6Value = mBinding.bit6.text.toString().toInt()
+                val bit7Value = mBinding.bit7.text.toString().toInt()
+                val bit8Value = mBinding.bit8.text.toString().toInt()
 
-            myBytesList[adapterIndex].bit1 = bit1Value == 1
-            myBytesList[adapterIndex].bit2 = bit2Value == 1
-            myBytesList[adapterIndex].bit3 = bit3Value == 1
-            myBytesList[adapterIndex].bit4 = bit4Value == 1
-            myBytesList[adapterIndex].bit5 = bit5Value == 1
-            myBytesList[adapterIndex].bit6 = bit6Value == 1
-            myBytesList[adapterIndex].bit7 = bit7Value == 1
-            myBytesList[adapterIndex].bit8 = bit8Value == 1
+                val newList = ArrayList(myBytesList)
+                newList[adapterIndex].bit1 = bit1Value == 1
+                newList[adapterIndex].bit2 = bit2Value == 1
+                newList[adapterIndex].bit3 = bit3Value == 1
+                newList[adapterIndex].bit4 = bit4Value == 1
+                newList[adapterIndex].bit5 = bit5Value == 1
+                newList[adapterIndex].bit6 = bit6Value == 1
+                newList[adapterIndex].bit7 = bit7Value == 1
+                newList[adapterIndex].bit8 = bit8Value == 1
 
 
-            mBinding.totalBytes.text = myBytesList[adapterIndex].getDisplayBytes()
+                setData(newList)
+            }
         }
 
         fun displayMyByte(myByte: MyByte, position: Int) {
 
+            isDataSetBySystem = true
             val layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
 
             layoutParams.weight = 13.6f
@@ -103,6 +107,7 @@ class MyBytesAdapter(private var myBytesList: List<MyByte>) :
             mBinding.bit7.setText((if (myByte.bit7) 1 else 0).toString())
             mBinding.bit8.setText((if (myByte.bit8) 1 else 0).toString())
 
+            isDataSetBySystem = false
 
         }
 
