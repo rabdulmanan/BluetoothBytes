@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">BluetoothByteData</string>
+
+    <string name="bluetooth_not_supported">Your device doesn\'t support bluetooth connectivity</string>
+
+    <string name="bytes_change_msg">Each bit is editable and when send is pressed app will send all 30 bytes one by one using bluetooth</string>
+</resources>
