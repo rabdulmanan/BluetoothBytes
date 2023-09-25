@@ -11,6 +11,8 @@ data class MyByte(
     var bit6 : Boolean = false,
     var bit7 : Boolean = false,
     var bit8 : Boolean = false,
+    var hasFocus : Boolean = false,
+    var focusedBit : Int = 0
 
 ){
 

@@ -38,7 +38,8 @@
         android:id="@+id/bit1"
         android:maxLength="1"
         android:inputType="number"
-        android:imeOptions="actionDone"/>
+        android:imeOptions="actionDone"
+        android:selectAllOnFocus="true"/>
 
     <EditText
         android:layout_width="0dp"
@@ -55,7 +56,8 @@
         android:id="@+id/bit2"
         android:inputType="number"
         android:maxLength="1"
-        android:imeOptions="actionDone"/>
+        android:imeOptions="actionDone"
+        android:selectAllOnFocus="true"/>
 
     <EditText
         android:layout_width="0dp"
@@ -72,7 +74,8 @@
         android:id="@+id/bit3"
         android:maxLength="1"
         android:inputType="number"
-        android:imeOptions="actionDone"/>
+        android:imeOptions="actionDone"
+        android:selectAllOnFocus="true"/>
 
     <EditText
         android:layout_width="0dp"
@@ -89,7 +92,8 @@
         android:id="@+id/bit4"
         android:maxLength="1"
         android:inputType="number"
-        android:imeOptions="actionDone"/>
+        android:imeOptions="actionDone"
+        android:selectAllOnFocus="true"/>
 
     <EditText
         android:layout_width="0dp"
@@ -106,7 +110,8 @@
         android:maxLength="1"
         android:id="@+id/bit5"
         android:inputType="number"
-        android:imeOptions="actionDone"/>
+        android:imeOptions="actionDone"
+        android:selectAllOnFocus="true"/>
 
     <EditText
         android:layout_width="0dp"
@@ -123,7 +128,8 @@
         android:id="@+id/bit6"
         android:maxLength="1"
         android:inputType="number"
-        android:imeOptions="actionDone"/>
+        android:imeOptions="actionDone"
+        android:selectAllOnFocus="true"/>
 
     <EditText
         android:layout_width="0dp"
@@ -140,7 +146,8 @@
         android:id="@+id/bit7"
         android:maxLength="1"
         android:inputType="number"
-        android:imeOptions="actionDone"/>
+        android:imeOptions="actionDone"
+        android:selectAllOnFocus="true"/>
     <EditText
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -156,7 +163,8 @@
         android:id="@+id/bit8"
         android:maxLength="1"
         android:inputType="number"
-        android:imeOptions="actionDone"/>
+        android:imeOptions="actionDone"
+        android:selectAllOnFocus="true"/>
 
     <TextView
         android:layout_width="0dp"
