@@ -58,6 +58,8 @@ class MainActivity : AppCompatActivity() {
         mBinding.resetBtn.setOnClickListener {
             confirmResetAll()
         }
+
+
     }
 
     private fun confirmResetAll(){
@@ -101,6 +103,14 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
 
         initializeBytes()
+
+
+        mBinding.sendBtn.isEnabled = BluetoothConnectionManager.hasBluetoothConnection()
+        if(BluetoothConnectionManager.hasBluetoothConnection()){
+            mBinding.sendBtn.text = "Send"
+        }else{
+            mBinding.sendBtn.text = "Disconnected"
+        }
 
     }
 
