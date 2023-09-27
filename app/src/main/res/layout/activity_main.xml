@@ -32,78 +32,8 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="E8"
-            android:layout_weight="1.2"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:background="@drawable/green_box"
-            android:textColor="@color/white"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:textSize="13sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="E7"
-            android:layout_weight="1.2"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:background="@drawable/green_box"
-            android:textColor="@color/white"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:textSize="13sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="E6"
-            android:layout_weight="1.2"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:background="@drawable/green_box"
-            android:textColor="@color/white"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:textSize="13sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="E5"
-            android:layout_weight="1.2"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:background="@drawable/green_box"
-            android:textColor="@color/white"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:textSize="13sp"
-            android:textStyle="bold"/>
-
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="E4"
-            android:layout_weight="1.2"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:background="@drawable/green_box"
-            android:textColor="@color/white"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:textSize="13sp"
-            android:textStyle="bold"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="E3"
-            android:layout_weight="1.2"
+            android:text="E1"
+            android:layout_weight="1.475"
             android:gravity="center"
             android:layout_gravity="center"
             android:background="@drawable/green_box"
@@ -117,7 +47,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="E2"
-            android:layout_weight="1.2"
+            android:layout_weight="1.475"
             android:gravity="center"
             android:layout_gravity="center"
             android:background="@drawable/green_box"
@@ -130,8 +60,78 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="E1"
-            android:layout_weight="1.2"
+            android:text="E3"
+            android:layout_weight="1.475"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/green_box"
+            android:textColor="@color/white"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="13sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="E4"
+            android:layout_weight="1.475"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/green_box"
+            android:textColor="@color/white"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="13sp"
+            android:textStyle="bold"/>
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="E5"
+            android:layout_weight="1.475"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/green_box"
+            android:textColor="@color/white"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="13sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="E6"
+            android:layout_weight="1.475"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/green_box"
+            android:textColor="@color/white"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="13sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="E7"
+            android:layout_weight="1.475"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/green_box"
+            android:textColor="@color/white"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="13sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="E8"
+            android:layout_weight="1.475"
             android:gravity="center"
             android:layout_gravity="center"
             android:background="@drawable/green_box"
@@ -153,7 +153,8 @@
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:textSize="13sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:visibility="gone"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -213,6 +214,7 @@
         android:textSize="16sp"
         android:paddingBottom="5dp"
         android:layout_margin="5dp"
-        android:id="@+id/footerMsg"/>
+        android:id="@+id/footerMsg"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

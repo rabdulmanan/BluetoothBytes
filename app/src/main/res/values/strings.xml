@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BluetoothByteData</string>
+    <string name="app_name">CCD</string>
 
     <string name="bluetooth_not_supported">Your device doesn\'t support bluetooth connectivity</string>
 
