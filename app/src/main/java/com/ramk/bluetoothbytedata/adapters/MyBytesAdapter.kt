@@ -18,7 +18,7 @@ import com.ramk.bluetoothbytedata.models.MyByte
 import com.ramk.bluetoothbytedata.utils.Utils
 import java.lang.Exception
 
-class MyBytesAdapter(private var myBytesList: List<MyByte>) :
+class MyBytesAdapter(private var myBytesList: List<MyByte>,private val listener: ItemScrollListener) :
     RecyclerView.Adapter<MyBytesAdapter.BytesViewHolder>() {
 
     init {
@@ -114,8 +114,11 @@ class MyBytesAdapter(private var myBytesList: List<MyByte>) :
                 if(newIndex<newList.size){
                     newList[newIndex].hasFocus = true
                     newList[newIndex].focusedBit = selectedByteNumber
+                }else{
+                    newList[adapterIndex].hasFocus = true
+                    newList[adapterIndex].focusedBit = selectedByteNumber
                 }
-
+                listener.needToScroll(newIndex,100)
                 setData(newList)
 
             }
@@ -286,5 +289,9 @@ class MyBytesAdapter(private var myBytesList: List<MyByte>) :
         }
 
 
+    }
+
+    interface ItemScrollListener{
+        fun needToScroll(position:Int, offset: Int)
     }
 }

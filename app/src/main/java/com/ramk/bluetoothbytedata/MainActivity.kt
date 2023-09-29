@@ -21,6 +21,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramk.bluetoothbytedata.BluetoothDeviceScanActivity.Companion.EXTRA_PARAM_CHANGE_BLUETOOTH
 import com.ramk.bluetoothbytedata.adapters.MyBytesAdapter
 import com.ramk.bluetoothbytedata.bluetooth.BluetoothConnectionManager
@@ -61,7 +62,13 @@ class MainActivity : AppCompatActivity() {
 
         prefs = getAppSharedPrefs()
 
-        mAdapter = MyBytesAdapter(emptyList())
+        mAdapter = MyBytesAdapter(emptyList(),object: MyBytesAdapter.ItemScrollListener {
+            override fun needToScroll(position: Int, offset: Int) {
+                val layoutManager = mBinding.bytesListView.layoutManager as LinearLayoutManager
+                layoutManager.scrollToPositionWithOffset(position,offset)
+            }
+
+        })
 
         mBinding.bytesListView.adapter = mAdapter
         mBinding.sendBtn.setOnClickListener {
