@@ -38,9 +38,8 @@ data class MyByte(
     }
 
     fun getDisplayBytes(): String{
-        var byte =  ""
 
-        byte = (if (bit1) 1 else 0).toString()
+        var byte = (if (bit1) 1 else 0).toString()
         byte += (if (bit2) 1 else 0).toString()
         byte += (if (bit3) 1 else 0).toString()
         byte += (if (bit4) 1 else 0).toString()

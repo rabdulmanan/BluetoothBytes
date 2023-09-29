@@ -13,6 +13,7 @@ import com.ramk.bluetoothbytedata.R
 
 object Utils {
 
+    val TEST_VALUE = "@#AB$&"
     val NUMBER_OF_BYTES = 30
     val SELECTED_BLUETOOTH_DEVICE_MAC = "selected_bluetooth_mac"
     val SELECTED_BLUETOOTH_DEVICE_NAME = "selected_bluetooth_name"

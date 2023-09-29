@@ -49,9 +49,6 @@ class MyBytesAdapter(private var myBytesList: List<MyByte>) :
         return BytesViewHolder(mBinding)
     }
 
-    private fun requestFocus(index:Int){
-
-    }
     override fun onBindViewHolder(holder: BytesViewHolder, position: Int) {
         val myByte = myBytesList[position]
         holder.displayMyByte(myByte, position)
@@ -94,10 +91,11 @@ class MyBytesAdapter(private var myBytesList: List<MyByte>) :
                 newList[adapterIndex].bit7 = bit7Value == 1
                 newList[adapterIndex].bit8 = bit8Value == 1
 
+                val selectedByteNumber = getFocusedBit(editText)
 
                 for (i in 1..Utils.NUMBER_OF_BYTES) {
 
-                    if(i-1 == adapterIndex){
+                    /*if(i-1 == adapterIndex){
                         newList[adapterIndex].hasFocus = true
                         val focusedBit = getNextFocusBit(editText)
                         newList[i - 1].focusedBit = focusedBit
@@ -105,7 +103,17 @@ class MyBytesAdapter(private var myBytesList: List<MyByte>) :
                     }else {
                         newList[i - 1].hasFocus = false
                         newList[i - 1].focusedBit = 0
-                    }
+                    }*/
+
+                    newList[i - 1].hasFocus = false
+                    newList[i - 1].focusedBit = 0
+                }
+
+                val newIndex = adapterIndex+1
+
+                if(newIndex<newList.size){
+                    newList[newIndex].hasFocus = true
+                    newList[newIndex].focusedBit = selectedByteNumber
                 }
 
                 setData(newList)
@@ -134,6 +142,37 @@ class MyBytesAdapter(private var myBytesList: List<MyByte>) :
                     return 7
                 }
                 R.id.bit7 ->{
+                    return 8
+                }
+            }
+
+            return 1
+        }
+
+        private fun getFocusedBit(editText: EditText):Int{
+            when(editText.id){
+                R.id.bit1 ->{
+                    return 1
+                }
+                R.id.bit2 ->{
+                    return 2
+                }
+                R.id.bit3 ->{
+                    return 3
+                }
+                R.id.bit4 ->{
+                    return 4
+                }
+                R.id.bit5 ->{
+                    return 5
+                }
+                R.id.bit6 ->{
+                    return 6
+                }
+                R.id.bit7 ->{
+                    return 7
+                }
+                R.id.bit8 ->{
                     return 8
                 }
             }
