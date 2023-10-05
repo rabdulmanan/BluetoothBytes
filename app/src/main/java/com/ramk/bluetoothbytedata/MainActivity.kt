@@ -1,26 +1,26 @@
 package com.ramk.bluetoothbytedata
 
 import android.Manifest
-import android.app.Instrumentation.ActivityResult
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.ParcelFileDescriptor
+import android.provider.DocumentsContract
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.RelativeLayout
-import android.widget.Toast
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.documentfile.provider.DocumentFile
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramk.bluetoothbytedata.BluetoothDeviceScanActivity.Companion.EXTRA_PARAM_CHANGE_BLUETOOTH
 import com.ramk.bluetoothbytedata.adapters.MyBytesAdapter
@@ -29,6 +29,7 @@ import com.ramk.bluetoothbytedata.databinding.ActivityMainBinding
 import com.ramk.bluetoothbytedata.databinding.InputLayoutBinding
 import com.ramk.bluetoothbytedata.models.MyByte
 import com.ramk.bluetoothbytedata.utils.Utils.BYTES_DATA
+import com.ramk.bluetoothbytedata.utils.Utils.FILE_STORAGE_DIR
 import com.ramk.bluetoothbytedata.utils.Utils.NUMBER_OF_BYTES
 import com.ramk.bluetoothbytedata.utils.Utils.TEST_VALUE
 import com.ramk.bluetoothbytedata.utils.Utils.getAppSharedPrefs
@@ -40,9 +41,8 @@ import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import java.io.OutputStreamWriter
-import java.text.SimpleDateFormat
-import java.util.Date
 
 
 class MainActivity : AppCompatActivity() {
@@ -237,7 +237,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadFileFromStorage() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            val mIntent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            mIntent.addCategory(Intent.CATEGORY_OPENABLE)
+            mIntent.type = "application/json"
+            if (contentResolver.persistedUriPermissions.any()) {
+                val uri = contentResolver.persistedUriPermissions[0].uri
+                mIntent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri)
+
+            }
+            filePickRequestLauncher.launch(mIntent)
+        }
+        else if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED
         ) {
 
@@ -247,7 +258,7 @@ class MainActivity : AppCompatActivity() {
 
         } else {
             val mIntent = Intent(Intent.ACTION_GET_CONTENT)
-            mIntent.setType("application/json");
+            mIntent.setType("application/json")
             filePickRequestLauncher.launch(mIntent)
         }
     }
@@ -296,7 +307,74 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun saveAllBytesInExternalStorage(list: List<MyByte>) {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+
+            if (contentResolver.persistedUriPermissions.isEmpty()) {
+
+                okayDialog("Storage permission","Please select directory where you want to save your data in file."){
+                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+                    permissionGrantFor = StoragePermissionGrantFor.SAVE_FILE
+                    selectFileStorageLauncher.launch(intent)
+                }
+
+            }else{
+                saveFileNameDialog { fileName ->
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val uri = contentResolver.persistedUriPermissions[0].uri
+                        try {
+                            val directory = DocumentFile.fromTreeUri(this@MainActivity, uri)
+
+                            if(directory!=null) {
+                                val file = directory.createFile("application/json",
+                                    "$fileName.json"
+                                )
+                                val pfd: ParcelFileDescriptor? =
+                                    contentResolver.openFileDescriptor(file!!.uri, "w")
+                                if(pfd!=null) {
+                                    val jsonArray = JSONArray()
+
+                                    list.forEach {
+                                        val jsonObj = it.toJSON()
+
+                                        jsonArray.put(jsonObj)
+                                    }
+
+                                    val str = jsonArray.toString()
+
+                                    val fos = FileOutputStream(pfd.fileDescriptor)
+                                    fos.write(str.toByteArray())
+                                    fos.close()
+                                    withContext(Dispatchers.Main) {
+                                        showMessage("Data save successfully ${file.name}")
+                                    }
+                                }else{
+                                    withContext(Dispatchers.Main) {
+                                        showMessage("Failed to create file $fileName")
+                                    }
+                                }
+                            }else{
+                                withContext(Dispatchers.Main) {
+                                    showMessage("${uri.lastPathSegment} directory not found")
+                                }
+                            }
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                            withContext(Dispatchers.Main) {
+                                okayDialog("Error","${e.message}"){
+
+                                }
+                                showMessage("Failed to save file, please check file name or storage permission")
+                            }
+                        }
+                    }
+
+                }
+
+            }
+        }
+        else if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED
         ) {
 
@@ -361,6 +439,7 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
+
 
     private fun sendMyDataList(list: List<MyByte>) {
 
@@ -448,19 +527,46 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    val filePickRequestLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult(),
-            { result ->
-                result?.let {
-                    val uri = result.data?.data
+    private val filePickRequestLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            result?.let {
+                val uri = result.data?.data
 
-                    if (uri != null) {
-                        readJsonFromUriAndLoadData(uri)
-                    }
-                    Log.d(TAG, "File you picked: $uri")
+                if (uri != null) {
+                    readJsonFromUriAndLoadData(uri)
+                }
+                Log.d(TAG, "File you picked: $uri")
+
+            }
+        }
+
+
+    private val selectFileStorageLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            result?.let {
+                val uri = result.data?.data
+
+                if (uri != null) {
+                    val takeFlags =
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+
+                    // take persistable Uri Permission for future use
+                    contentResolver
+                        .takePersistableUriPermission(uri, takeFlags)
+
+                    val prefs = getAppSharedPrefs()
+                    prefs.edit().putString(FILE_STORAGE_DIR,uri.toString()).commit()
+
+                    val myByteList = mAdapter.getData()
+                    saveAllBytesInExternalStorage(myByteList)
 
                 }
-            })
+                Log.d(TAG, "File you picked: $uri")
+
+            }
+        }
 
     enum class StoragePermissionGrantFor {
         NONE,

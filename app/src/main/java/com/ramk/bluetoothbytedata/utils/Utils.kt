@@ -17,6 +17,8 @@ object Utils {
     val NUMBER_OF_BYTES = 30
     val SELECTED_BLUETOOTH_DEVICE_MAC = "selected_bluetooth_mac"
     val SELECTED_BLUETOOTH_DEVICE_NAME = "selected_bluetooth_name"
+
+    val FILE_STORAGE_DIR = "file_storage_dir"
     val BYTES_DATA = "bytes_data"
 
     var selectedDeviceMac: String? = null
